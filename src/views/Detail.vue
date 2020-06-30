@@ -19,22 +19,22 @@
                 :thumb="data.icon"
         />
 
-        <van-cell-group class="goods-cell-group">
-            <van-cell class="goods-express">
-                <van-col span="21">配送方式</van-col>
+        <van-cell-group>
+            <van-cell class="goods-cell-group" style="font-weight: bold">
+                <van-col span="20">配送方式</van-col>
                 <van-col>快递</van-col>
             </van-cell>
         </van-cell-group>
 
-        <van-cell-group class="goods-cell-group">
-            <van-cell class="goods-express" style="font-weight: bold">
+        <van-cell-group>
+            <van-cell class="goods-cell-group" style="font-weight: bold">
                 <van-col span="20">商品金额</van-col>
                 <van-col style="color: red">￥{{data.amount-10}}</van-col>
             </van-cell>
         </van-cell-group>
 
         <van-cell-group>
-            <van-cell class="goods-express" style="font-weight: bold">
+            <van-cell class="goods-cell-group" style="font-weight: bold">
                 <van-col span="20">运费</van-col>
                 <van-col style="color: red">￥{{data.freight}}</van-col>
             </van-cell>
@@ -77,7 +77,8 @@
         },
         data() {
             return {
-                data:{
+                data: ''
+                /*{
                     orderId: "1586242977480760998",
                     buyerName: "小明",
                     phoneName: "Honor 8A",
@@ -90,27 +91,28 @@
                     price: "2800.00",
                     icon: "../static/e84a2e03-7f19-41d2-98a5-a5c16b7e252d.jpg",
                     amount: 2800
-                }
+                }*/
             };
         },
         created(){
             const _this = this
             axios.get('http://localhost:8181/order/detail/'+this.$route.query.orderId).then(function (resp) {
+                // console.log(resp)
                 _this.data = resp.data.data
             })
         },
         methods: {
             onSubmit:function () {
                 const _this = this
-                // axios.put('http://localhost:8181/order/pay/'+this.$route.query.orderId).then(function (resp) {
-                    if(true){
+                axios.put('http://localhost:8181/order/pay/'+this.$route.query.orderId).then(function (resp) {
+                    if(resp.data.code == 0){
                         let instance = Toast('订单'+'支付成功');
                         setTimeout(() => {
                             instance.close();
                             _this.$router.push('/success?orderId='+_this.data.orderId+"&amount="+(_this.data.amount))
                         }, 1000)
                     }
-                // })
+                })
             }
         }
     };

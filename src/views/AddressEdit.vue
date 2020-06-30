@@ -30,15 +30,15 @@
         methods: {
             onSave(item) {
                 const _this = this
-                // axios.put('http://localhost:8181/address/update',item).then(function (resp) {
-                    if(true){
+                axios.put('http://localhost:8181/address/update',item).then(function (resp) {
+                    if(resp.data.code == 0){
                         let instance = Toast('修改成功');
                         setTimeout(() => {
                             instance.close()
                             _this.$router.push('/addressList')
                         }, 1000)
                     }
-                // })
+                })
 
             },
             onDelete() {

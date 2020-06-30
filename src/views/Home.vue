@@ -2,9 +2,9 @@
   <div>
     <van-row>
       <van-col span="24">
-        <van-tabs  title-active-color="#E32DAB"  :line-width="100" :line-height="2">
+        <van-tabs  @click="onClick" title-active-color="#E32DAB"  :line-width="100" :line-height="2">
           <van-tab v-for="index in categories.length" :title="categories[index-1].name" class="tab">
-            <van-card v-for="item in phones"
+            <van-card v-for="(item,index) in phones"
                       :price="item.price"
                       :desc="item.desc"
                       :title="item.title"
@@ -52,63 +52,32 @@
   export default {
     data() {
       return {
-        categories:[
-          {name:"魅焰红",
-          type: 1
-          },
-          {name:"极光蓝",
-            type: 2
-          },
-          {name:"铂光金",
-            type: 3
-          },
-          {name:"幻夜黑",
-            type: 4
-          }
-        ],
-        phones:[
-          {
-            id: 1,
-            price:"2800.00",
-            title:"Honor 8A",
-            desc: "魅焰红",
-            thumb:"../static/e84a2e03-7f19-41d2-98a5-a5c16b7e252d.jpg",
-            tag:[
-              {
-                name:"720P珍珠屏"
-              },
-              {
-                name:"Micro USB接口"
-              }
-            ]
-          },
-          {
-            id: 2,
-            price:"2500.00",
-            title:"Honor 10 青春版",
-            desc: "极光蓝",
-            thumb:"../static/8f0bd0d0-a11e-4185-927e-04b54ff4a1bd.jpg",
-            tag:[
-              {
-                name:"720P珍珠屏"
-              },
-              {
-                name:"EMUI9 Lite"
-              }
-              ]
-          }
-        ],
+        categories:'',
+        phones:'',
         show:false,
-        sku: '',
-        goods: {
-          picture:"../static/8f0bd0d0-a11e-4185-927e-04b54ff4a1bd.jpg"
-        }
+        sku: {},
+        goods: {}
       };
+    },
+    created() {
+      const  _this = this;
+      axios.get('http://localhost:8181/phone/index').then(function (resp) {
+        // console.log(resp)
+        _this.categories = resp.data.data.categories
+        _this.phones = resp.data.data.phones
+      })
     },
     methods:{
       buy(index) {
+        // alert(this.phones[index].id)
         this.show = true
-        this.sku = {
+        const _this = this
+        axios.get('http://localhost:8181/phone/findSpecsByPhoneId/' + this.phones[index].id).then(function (resp) {
+          _this.sku = resp.data.data.sku
+          _this.goods = resp.data.data.goods
+        })
+      },
+        /*this.sku = {
           // 所有sku规格类目与其值的从属关系，比如商品有颜色和尺码两大类规格，颜色下面又有红色和蓝色两个规格值。
           // 可以理解为一个商品可以有多个规格类目，一个规格类目下可以有多个规格值。
           tree: [
@@ -163,11 +132,19 @@
           ],
           hide_stock: false // 是否隐藏剩余库存
         }
-      },
+      },*/
       onBuyClicked(item){
         this.$store.state.specsId = item.selectedSkuComb.s1
         this.$store.state.quantity = item.selectedNum
         this.$router.push('/addressList')
+      },
+      onClick(index){
+        // alert(index) 前端的下标
+        // alert(this.categories[index].type);
+        const _this = this
+        axios.get('http://localhost:8181/phone/findByCategoryType/'+this.categories[index].type).then(function (resp) {
+          _this.phones = resp.data.data
+        })
       }
     }
   };

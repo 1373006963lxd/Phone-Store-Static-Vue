@@ -92,20 +92,21 @@
         },
         data() {
             return {
-                data:{
-                    orderId: "1586242977480760998",
-                    buyerName: "小明",
-                    phoneName: "Honor 8A",
-                    payStatus: 1,
-                    freight: 10,
-                    tel: "13636363636",
-                    address: "浙江省杭州市江干区789号",
-                    num: 1,
-                    specs: "32GB",
-                    price: "2800.00.00",
-                    icon: "../static/e84a2e03-7f19-41d2-98a5-a5c16b7e252d.jpg",
-                    amount: 2800
-                }
+                 data: ''
+                     // {
+                //     orderId: "1586242977480760998",
+                //     buyerName: "小明",
+                //     phoneName: "Honor 8A",
+                //     payStatus: 1,
+                //     freight: 10,
+                //     tel: "13636363636",
+                //     address: "浙江省杭州市江干区789号",
+                //     num: 1,
+                //     specs: "32GB",
+                //     price: "2800.00.00",
+                //     icon: "../static/e84a2e03-7f19-41d2-98a5-a5c16b7e252d.jpg",
+                //     amount: 2800
+                // }
             };
         },
         methods: {
